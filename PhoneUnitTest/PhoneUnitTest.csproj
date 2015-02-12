@@ -130,10 +130,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\sqlite-net-wp8\Sqlite.vcxproj">
-      <Project>{59b35f6c-e062-4f0e-88d8-13f3f82a24f3}</Project>
-      <Name>Sqlite</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WP8-SqliteDemo\WP8-SqliteDemo.csproj">
       <Project>{8f4cbda3-b507-4098-820a-ab49af1db1dc}</Project>
       <Name>WP8-SqliteDemo</Name>
