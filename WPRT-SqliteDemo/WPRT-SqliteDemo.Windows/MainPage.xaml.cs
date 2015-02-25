@@ -5,12 +5,14 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -173,6 +175,76 @@ namespace WPRT_SqliteDemo
             int result = _helper.GetCrossTable();
             long tick2 = DateTime.Now.Ticks;
             txt_joinQuery2.Text = result + "条; used time: " + (tick2 - tick1) / 10000 + "ms";
+        }
+
+        private async void btn_thumbnail_Click(object sender, RoutedEventArgs e)
+        {
+            _helper.CreateTable(typeof(SqlHelper.ImageTable));
+            SqlHelper.ImageTable it = null;
+            long tick1 = DateTime.Now.Ticks;
+            it = _helper.GetImage();
+            long tick2 = DateTime.Now.Ticks;
+            txt_getpicrec.Text = "load record used time: " + (tick2 - tick1) / 10000 + "ms";
+
+            if (it == null)
+            {
+                it = new SqlHelper.ImageTable();
+                var folder = await KnownFolders.PicturesLibrary.GetFolderAsync("牛背山");
+                var files = await folder.GetFilesAsync(Windows.Storage.Search.CommonFileQuery.OrderByDate);
+                if (files.Count > 0)
+                {
+                    var file = files[0];
+                    it.Name = file.Name;
+                    if (file.FileType == ".jpg")
+                    {
+
+                        var thumbStream = await file.GetScaledImageAsThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView, 200);
+
+                        var st = thumbStream.AsStreamForRead();
+                        byte[] thumbdata = new byte[st.Length];
+                        int read = await st.ReadAsync(thumbdata, 0, thumbdata.Length);
+                        if (read == thumbdata.Length)
+                        {
+                            it.Thumbnail = thumbdata;
+                        }
+                        thumbStream.CloneStream();
+                        var previewStream = await file.GetScaledImageAsThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.PicturesView, 480);
+
+                        var st2 = previewStream.AsStreamForRead();
+                        byte[] previewdata = new byte[st2.Length];
+                        int read2 = await st2.ReadAsync(previewdata, 0, previewdata.Length);
+                        if (read2 == previewdata.Length)
+                        {
+                            it.PreviewImage = previewdata;
+                        }
+                        previewStream.CloneStream();
+                        _helper.Insert(it);
+                    }
+                }
+            }
+
+            {
+                long tick3 = DateTime.Now.Ticks;
+                MemoryStream ms1 = new MemoryStream();
+                await ms1.WriteAsync(it.Thumbnail, 0, it.Thumbnail.Length);
+                ms1.Seek(0, SeekOrigin.Begin);
+                BitmapImage bmp = new BitmapImage();
+                bmp.SetSource(ms1.AsRandomAccessStream());
+                image_thumbnail.Height = 200;
+                image_thumbnail.Source = bmp;
+                long tick4 = DateTime.Now.Ticks;
+                txt_thumbnail.Text = "load image used time: " + (tick4 - tick3) / 10000 + "ms";
+            }
+
+            MemoryStream ms2 = new MemoryStream();
+            await ms2.WriteAsync(it.PreviewImage, 0, it.PreviewImage.Length);
+            ms2.Seek(0, SeekOrigin.Begin);
+            BitmapImage bmp2 = new BitmapImage();
+            bmp2.SetSource(ms2.AsRandomAccessStream());
+            image_preview.Height = 400;
+            image_preview.Source = bmp2;
+            long tick0 = DateTime.Now.Ticks;
+            txt_preview.Text = "all used time: " + (tick0 - tick1) / 10000 + "ms";
         }
     }
 }

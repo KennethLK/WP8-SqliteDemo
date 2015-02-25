@@ -25,6 +25,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="btn_create" Content="创建或打开数据库" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Click="btn_create_Click"/>
         <TextBlock x:Name="txt_create" Grid.Column="1" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" VerticalAlignment="Center"/>
@@ -48,8 +50,16 @@
         <TextBlock x:Name="txt_insertRecord2" Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="9" TextWrapping="Wrap" VerticalAlignment="Center"/>
         <Button x:Name="btn_deleteRecord2" Content="删除一条记录" HorizontalAlignment="Center" Margin="0" Grid.Row="10" VerticalAlignment="Center" Click="btn_deleteRecord2_Click"/>
         <TextBlock x:Name="txt_deleteRecord2" Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="10" TextWrapping="Wrap" VerticalAlignment="Center"/>
-        <Button x:Name="btn_joinQuery2" Content="交叉结果数" HorizontalAlignment="Center" Margin="0" Grid.Row="11" VerticalAlignment="Center" Click="btn_joinQuery2_Click"/>
-        <TextBlock x:Name="txt_joinQuery2" Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="11" TextWrapping="Wrap" VerticalAlignment="Center"/>
-
+        <Button x:Name="btn_joinQuery2" Content="交叉结果数" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Click="btn_joinQuery2_Click" Grid.Column="2"/>
+        <TextBlock x:Name="txt_joinQuery2" Grid.Column="3" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+        <Button x:Name="btn_thumbnail" Content="预览图" HorizontalAlignment="Center" Margin="0" Grid.RowSpan="3" Grid.Row="1" VerticalAlignment="Center" Click="btn_thumbnail_Click" Grid.Column="2"/>
+        <StackPanel Grid.Column="3" Grid.RowSpan="10" Grid.Row="1" Orientation="Vertical">
+            <TextBlock x:Name="txt_getpicrec" />
+            <TextBlock x:Name="txt_thumbnail" />
+            <Image x:Name="image_thumbnail" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+            <TextBlock x:Name="txt_preview" />
+            <Image x:Name="image_preview" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Center" />
+        </StackPanel>
+       
     </Grid>
 </Page>

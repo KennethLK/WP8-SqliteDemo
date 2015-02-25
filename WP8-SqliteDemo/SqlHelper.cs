@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPRT_SqliteDemo
+namespace WP8_SqliteDemo
 {
     public class SqlHelper
     {
@@ -162,10 +162,7 @@ namespace WPRT_SqliteDemo
         public class ImageTable
         {
             [PrimaryKey]
-            [AutoIncrement]
             public int Id { get; set; }
-
-            public string Name { get; set; }
 
             public byte[] Thumbnail { get; set; }
 
@@ -175,12 +172,7 @@ namespace WPRT_SqliteDemo
         public void CreateTable(Type table)
         {
             _conn.CreateTable(table);
-            //_conn.Execute("delete from " + table.Name);
-        }
-
-        public void Insert(ImageTable it)
-        {
-            _conn.Insert(it);
+            _conn.Execute("delete from " + table.Name);
         }
 
         public int GetCrossTable()
@@ -193,19 +185,6 @@ namespace WPRT_SqliteDemo
             catch
             {
                 return -1;
-            }
-        }
-
-        public ImageTable GetImage()
-        {
-            var list = _conn.Query<ImageTable>("select * from ImageTable limit 1");
-            if (list != null && list.Count > 0)
-            {
-                return list[0];
-            }
-            else
-            {
-                return null;
             }
         }
     }
